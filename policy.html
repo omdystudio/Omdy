@@ -3,155 +3,743 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Privacy Policy — Omdy Studio</title>
-
+<title>Omdy Studio — Mobile Game Developers</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0d0b1e;
   --surface:#16132e;
+  --surface2:#1e1a3a;
   --text:#f5f0ff;
   --muted:#9b8fc4;
   --yellow:#ffe347;
+  --pink:#ff5fa0;
+  --cyan:#4df0ff;
+  --purple:#a855f7;
+  --green:#3dffa0;
+  --orange:#ff8c3d;
+  --font-head:'Fredoka',sans-serif;
+  --font-body:'Nunito',sans-serif;
 }
-body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden}
+
+/* Stars BG */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) var(--delay,0s) infinite ease-in-out}
+@keyframes twinkle{0%,100%{opacity:0.2;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
 
 /* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 3rem;height:68px;
-  background:rgba(10,9,22,0.95);
+  background:rgba(10,9,22,0.92);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid rgba(255,255,255,0.07);
-}
-.nav-logo img{height:50px}
+  transition:height 0.3s ease,background 0.3s ease,border-color 0.3s ease}
+nav.scrolled{
+  height:56px;
+  background:rgba(8,7,18,0.97);
+  border-bottom-color:rgba(255,255,255,0.12)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon-img{width:34px;height:34px;object-fit:contain;border-radius:8px;transition:transform 0.2s}
+.nav-logo:hover .logo-icon-img{transform:rotate(-8deg) scale(1.08)}
+.logo-wordmark{height:70px;object-fit:contain;filter:invert(1) brightness(1);opacity:0.92}
 
-/* SECTION */
-section{padding:9rem 2rem 5rem}
-.section-inner{max-width:900px;margin:0 auto;text-align:center}
-h1{font-size:2.5rem;margin-bottom:1rem}
-.desc{color:var(--muted);margin-bottom:3rem}
+/* NAV TABS */
+.nav-tabs{
+  display:flex;align-items:center;gap:2px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:100px;
+  padding:4px;
+  list-style:none}
+.nav-tabs li a{
+  display:block;
+  padding:0.38rem 1.1rem;
+  border-radius:100px;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:0.82rem;font-weight:600;
+  letter-spacing:0.02em;
+  transition:color 0.2s,background 0.2s}
+.nav-tabs li a:hover{color:var(--text);background:rgba(255,255,255,0.06)}
+.nav-tabs li a.active{
+  background:rgba(255,227,71,0.12);
+  color:var(--yellow);
+  font-weight:700}
 
-/* BOX */
-.box{
-  background:var(--surface);
+/* NAV RIGHT */
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:0.45rem 1.2rem;
+  background:linear-gradient(135deg,var(--yellow),var(--orange));
+  color:#1a0a00;font-weight:700;font-size:0.82rem;
+  border-radius:100px;text-decoration:none;
+  letter-spacing:0.02em;
+  box-shadow:0 4px 16px rgba(255,180,0,0.25);
+  transition:transform 0.2s,box-shadow 0.2s}
+.nav-cta:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 6px 24px rgba(255,180,0,0.4)}
+.nav-cta .cta-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#1a0a00;opacity:0.5;
+  animation:pulse 2s infinite}
+
+/* HAMBURGER */
+.nav-hamburger{
+  display:none;
+  flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;padding:4px}
+.nav-hamburger span{
+  display:block;width:22px;height:2px;
+  background:var(--text);border-radius:2px;
+  transition:transform 0.3s,opacity 0.3s}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* MOBILE DRAWER */
+.mobile-menu{
+  position:fixed;top:68px;left:0;right:0;
+  background:rgba(10,9,22,0.97);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:1.5rem 2rem 2rem;
+  z-index:99;
+  transform:translateY(-110%);opacity:0;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.3s}
+.mobile-menu.open{transform:translateY(0);opacity:1}
+.mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:4px;margin-bottom:1.5rem}
+.mobile-menu ul li a{
+  display:block;padding:0.75rem 1rem;border-radius:10px;
+  color:var(--muted);text-decoration:none;font-weight:600;font-size:0.95rem;
+  transition:color 0.2s,background 0.2s}
+.mobile-menu ul li a:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.mobile-menu .mobile-cta{
+  display:block;text-align:center;
+  padding:0.85rem;border-radius:12px;
+  background:linear-gradient(135deg,var(--yellow),var(--orange));
+  color:#1a0a00;font-weight:700;text-decoration:none;font-size:0.95rem}
+
+/* HERO */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:7rem 2rem 5rem;
+  position:relative;z-index:1}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,227,71,0.1);
+  border:1px solid rgba(255,227,71,0.3);
+  border-radius:100px;
+  padding:6px 16px;
+  font-size:0.78rem;font-weight:700;
+  color:var(--yellow);letter-spacing:0.08em;text-transform:uppercase;
+  margin-bottom:1.5rem;
+  animation:popIn 0.6s ease both}
+.hero-badge::before{content:'🎮';font-size:0.9rem}
+@keyframes popIn{from{opacity:0;transform:scale(0.8) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+h1{
+  font-family:var(--font-head);
+  font-size:clamp(3rem,8vw,6.5rem);
+  font-weight:700;
+  line-height:1.0;
+  letter-spacing:-0.01em;
+  margin-bottom:1.2rem;
+  animation:slideUp 0.7s 0.1s ease both}
+h1 .line1{color:var(--text)}
+h1 .line2{
+  background:linear-gradient(90deg,var(--yellow),var(--pink),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-sub{
+  font-size:clamp(1rem,2vw,1.2rem);
+  color:var(--muted);max-width:560px;line-height:1.7;
+  margin:0 auto 2.5rem;
+  animation:slideUp 0.7s 0.2s ease both}
+
+.hero-btns{
+  display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;
+  animation:slideUp 0.7s 0.3s ease both}
+.btn-main{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:0.9rem 2.2rem;
+  background:linear-gradient(135deg,var(--yellow),var(--orange));
+  color:#1a0a00;font-weight:800;font-size:1rem;
+  border-radius:100px;text-decoration:none;
+  box-shadow:0 8px 32px rgba(255,227,71,0.3);
+  transition:transform 0.2s,box-shadow 0.2s}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(255,227,71,0.45)}
+.btn-sec{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:0.9rem 2.2rem;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.15);
+  color:var(--text);font-weight:700;font-size:1rem;
+  border-radius:100px;text-decoration:none;
+  transition:background 0.2s,border-color 0.2s}
+.btn-sec:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3)}
+
+/* Floating doors animation */
+.doors-float{
+  display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;
+  margin-top:4rem;
+  animation:slideUp 0.7s 0.4s ease both}
+.door{
+  width:70px;height:110px;border-radius:10px 10px 0 0;
+  position:relative;cursor:pointer;
+  transition:transform 0.3s,box-shadow 0.3s}
+.door:hover{transform:translateY(-10px) scale(1.05)}
+.door-1{background:linear-gradient(180deg,#ff5fa0,#c0365a);box-shadow:0 10px 30px rgba(255,95,160,0.4)}
+.door-2{background:linear-gradient(180deg,#ffe347,#ff8c3d);box-shadow:0 10px 30px rgba(255,227,71,0.4)}
+.door-3{background:linear-gradient(180deg,#4df0ff,#1a90c0);box-shadow:0 10px 30px rgba(77,240,255,0.4)}
+.door-4{background:linear-gradient(180deg,#a855f7,#6020b0);box-shadow:0 10px 30px rgba(168,85,247,0.4)}
+.door::before{
+  content:'';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:12px;height:12px;border-radius:50%;
+  background:rgba(255,255,255,0.6)}
+.door-label{
+  position:absolute;bottom:-28px;left:50%;transform:translateX(-50%);
+  font-size:0.75rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.door-floor{
+  position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+  width:80px;height:8px;border-radius:0 0 8px 8px;
+  background:rgba(255,255,255,0.08)}
+
+/* SECTION SHARED */
+section{padding:7rem 2rem;position:relative;z-index:1}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-eyebrow{
+  display:inline-block;
+  font-size:0.75rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--yellow);
+  background:rgba(255,227,71,0.08);
+  border:1px solid rgba(255,227,71,0.2);
+  border-radius:100px;
+  padding:4px 14px;
+  margin-bottom:1rem}
+h2{
+  font-family:var(--font-head);
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:700;line-height:1.1;
+  margin-bottom:0.75rem}
+.section-desc{color:var(--muted);font-size:1rem;line-height:1.7;max-width:500px;margin-bottom:3rem}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+/* GAME SECTION */
+#game{background:var(--surface)}
+.game-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:center}
+.game-mockup{
+  background:var(--surface2);
+  border-radius:24px;
   border:1px solid rgba(255,255,255,0.08);
+  padding:2rem;
+  text-align:center;
+  position:relative;overflow:hidden}
+.game-mockup::before{
+  content:'';
+  position:absolute;top:-40px;right:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,227,71,0.12),transparent 70%)}
+.game-icon{
+  width:120px;height:120px;border-radius:28px;
+  overflow:hidden;
+  border:3px solid rgba(255,227,71,0.4);
+  margin:0 auto 1.5rem;
+  box-shadow:0 16px 40px rgba(0,0,0,0.5)}
+.game-title-big{
+  font-family:var(--font-head);font-size:1.6rem;font-weight:700;
+  margin-bottom:0.4rem}
+.game-subtitle{color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem}
+.stars-row{display:flex;justify-content:center;align-items:center;gap:4px;margin-bottom:0.5rem}
+.star-icon{color:var(--yellow);font-size:1.1rem}
+.rating-num{font-weight:700;font-size:0.9rem;margin-left:6px;color:var(--yellow)}
+.review-count{font-size:0.78rem;color:var(--muted);margin-left:4px}
+.badge-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:1.2rem}
+.badge{
+  padding:5px 12px;border-radius:100px;
+  font-size:0.73rem;font-weight:700;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--muted)}
+.badge.hot{background:rgba(255,95,160,0.1);border-color:rgba(255,95,160,0.3);color:var(--pink)}
+.badge.new{background:rgba(77,240,255,0.1);border-color:rgba(77,240,255,0.3);color:var(--cyan)}
+
+.game-info h2{margin-bottom:0.75rem}
+.game-desc{color:var(--muted);font-size:0.95rem;line-height:1.75;margin-bottom:2rem}
+.feature-list{display:flex;flex-direction:column;gap:0.9rem;margin-bottom:2.5rem}
+.feature-item{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--surface2);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:12px;
+  padding:1rem 1.2rem}
+.feature-icon{font-size:1.4rem;flex-shrink:0;line-height:1}
+.feature-text strong{display:block;font-size:0.9rem;font-weight:700;margin-bottom:2px}
+.feature-text span{font-size:0.82rem;color:var(--muted)}
+.download-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:1rem 2rem;
+  background:linear-gradient(135deg,#1a6e31,#22a547);
+  border-radius:14px;
+  text-decoration:none;color:#fff;font-weight:700;
+  box-shadow:0 8px 24px rgba(34,165,71,0.35);
+  transition:transform 0.2s,box-shadow 0.2s;
+  font-size:0.95rem}
+.download-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(34,165,71,0.5)}
+.download-btn .icon{font-size:1.3rem}
+
+/* WORLDS */
+#worlds{background:var(--bg)}
+.worlds-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.world-card{
+  background:var(--surface);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:18px;
+  padding:2rem 1.5rem;
+  text-align:center;
+  cursor:pointer;
+  transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s;
+  position:relative;overflow:hidden}
+.world-card:hover{transform:translateY(-8px)}
+.world-card.desert:hover{border-color:rgba(255,227,71,0.5);box-shadow:0 20px 50px rgba(255,227,71,0.12)}
+.world-card.ice:hover{border-color:rgba(77,240,255,0.5);box-shadow:0 20px 50px rgba(77,240,255,0.12)}
+.world-card.farm:hover{border-color:rgba(61,255,160,0.5);box-shadow:0 20px 50px rgba(61,255,160,0.12)}
+.world-card.classic:hover{border-color:rgba(168,85,247,0.5);box-shadow:0 20px 50px rgba(168,85,247,0.12)}
+.world-emoji{font-size:3rem;margin-bottom:1rem;display:block}
+.world-name{font-family:var(--font-head);font-size:1.1rem;font-weight:700;margin-bottom:0.4rem}
+.world-desc{font-size:0.8rem;color:var(--muted);line-height:1.5}
+.world-card.desert .world-name{color:var(--yellow)}
+.world-card.ice .world-name{color:var(--cyan)}
+.world-card.farm .world-name{color:var(--green)}
+.world-card.classic .world-name{color:var(--purple)}
+
+/* MODES */
+#modes{background:var(--surface)}
+.modes-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.mode-card{
+  background:var(--bg);
   border-radius:20px;
   padding:2.5rem;
-  text-align:left;
-  line-height:1.8;
-  color:var(--muted);
-}
-.box h3{
-  color:var(--yellow);
-  margin-top:2rem;
-  margin-bottom:0.5rem;
-}
-.box ul{margin-left:1.2rem}
-
-/* CONTACT */
-.contact{
-  margin-top:1rem;
-  padding:0.7rem 1rem;
-  background:rgba(255,227,71,0.1);
-  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.07);
+  position:relative;overflow:hidden;
+  transition:transform 0.25s}
+.mode-card:hover{transform:translateY(-5px)}
+.mode-card.mrbeast{border-color:rgba(255,227,71,0.25)}
+.mode-card.mrbeast::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,227,71,0.1),transparent 70%)}
+.mode-card.aboflah{border-color:rgba(255,95,160,0.25)}
+.mode-card.aboflah::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,95,160,0.1),transparent 70%)}
+.mode-label{
   display:inline-block;
-}
-.contact a{color:var(--yellow);text-decoration:none;font-weight:700}
+  font-size:0.7rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:4px 12px;border-radius:100px;
+  margin-bottom:1.2rem}
+.mode-card.mrbeast .mode-label{background:rgba(255,227,71,0.12);color:var(--yellow);border:1px solid rgba(255,227,71,0.3)}
+.mode-card.aboflah .mode-label{background:rgba(255,95,160,0.12);color:var(--pink);border:1px solid rgba(255,95,160,0.3)}
+.mode-title{font-family:var(--font-head);font-size:1.6rem;font-weight:700;margin-bottom:0.75rem}
+.mode-desc{font-size:0.88rem;color:var(--muted);line-height:1.7}
+
+/* LANGUAGES */
+#languages{background:var(--bg)}
+.langs-row{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:2rem}
+.lang-pill{
+  display:flex;align-items:center;gap:8px;
+  padding:0.75rem 1.5rem;
+  background:var(--surface);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:100px;
+  font-weight:700;font-size:0.9rem;
+  transition:border-color 0.2s,transform 0.2s}
+.lang-pill:hover{border-color:var(--cyan);transform:scale(1.05)}
+.lang-flag{font-size:1.2rem}
+
+/* STATS */
+#stats{background:var(--surface)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.stat-card{
+  background:var(--bg);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:18px;
+  padding:2rem;text-align:center}
+.stat-num{
+  font-family:var(--font-head);
+  font-size:2.8rem;font-weight:700;
+  background:linear-gradient(135deg,var(--yellow),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:0.85rem;color:var(--muted);margin-top:6px;font-weight:600}
+
+/* CTA */
+#cta{
+  background:var(--bg);
+  text-align:center;
+  padding:8rem 2rem}
+.cta-box{
+  background:linear-gradient(135deg,rgba(255,227,71,0.06),rgba(255,95,160,0.06));
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:28px;
+  padding:5rem 3rem;
+  max-width:700px;margin:0 auto;
+  position:relative;overflow:hidden}
+.cta-box::before{
+  content:'🚪';
+  position:absolute;font-size:8rem;
+  top:-20px;right:-20px;opacity:0.06;
+  pointer-events:none}
+.cta-box h2{font-size:clamp(2rem,4vw,3.2rem);margin-bottom:1rem}
+.cta-box p{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
 
 /* FOOTER */
-footer{
-  text-align:center;
-  padding:2rem;
-  border-top:1px solid rgba(255,255,255,0.08);
+footer{background:var(--surface);border-top:1px solid rgba(255,255,255,0.07);padding:0}
+.footer-top{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;
+  gap:3rem;padding:4rem 2rem 3rem}
+.footer-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:1.2rem;text-decoration:none}
+.footer-brand-logo img:first-child{width:34px;height:34px;object-fit:contain;border-radius:8px}
+.footer-brand-logo img:last-child{height:45px;object-fit:contain;filter:invert(1) brightness(1);opacity:0.9}
+.footer-brand-desc{font-size:0.84rem;color:var(--muted);line-height:1.75;max-width:230px;margin-bottom:1.5rem}
+.footer-social{display:flex;gap:8px}
+.social-btn{
+  width:34px;height:34px;border-radius:8px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;text-decoration:none;color:var(--muted);
+  transition:background 0.2s,border-color 0.2s,color 0.2s,transform 0.2s}
+.social-btn:hover{background:rgba(255,227,71,0.1);border-color:rgba(255,227,71,0.3);color:var(--yellow);transform:translateY(-2px)}
+.footer-col-title{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);margin-bottom:1.2rem}
+.footer-col-links{list-style:none;display:flex;flex-direction:column;gap:0.55rem}
+.footer-col-links a{
+  font-size:0.84rem;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:0;
+  transition:color 0.2s,padding-left 0.2s}
+.footer-col-links a:hover{color:var(--text);padding-left:6px}
+.footer-contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:1rem}
+.footer-contact-icon{
+  width:30px;height:30px;border-radius:7px;
+  background:rgba(255,227,71,0.07);border:1px solid rgba(255,227,71,0.14);
+  display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0}
+.footer-contact-label{font-size:0.65rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1px}
+.footer-contact-val{font-size:0.83rem;color:var(--text);font-weight:600}
+.footer-contact-val a{color:inherit;text-decoration:none;transition:color 0.2s}
+.footer-contact-val a:hover{color:var(--yellow)}
+.footer-bottom-wrap{border-top:1px solid rgba(255,255,255,0.06)}
+.footer-bottom{
+  max-width:1100px;margin:0 auto;
+  padding:1.1rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem}
+.footer-copy{font-size:0.77rem;color:var(--muted)}
+.footer-copy span{color:var(--yellow);font-weight:700}
+.footer-legal{display:flex;gap:1.5rem}
+.footer-legal a{font-size:0.77rem;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.footer-legal a:hover{color:var(--text)}
+
+/* Responsive */
+@media(max-width:900px){
+  nav{padding:0 1.5rem}
+  .nav-tabs{display:none}
+  .nav-hamburger{display:flex}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2rem;padding:3rem 1.5rem 2rem}
+  .game-grid,.modes-grid{grid-template-columns:1fr}
+  .worlds-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  section{padding:5rem 1.5rem}
+}
+@media(max-width:500px){
+  .worlds-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .doors-float .door:nth-child(3),.doors-float .door:nth-child(4){display:none}
+}
+  /* PRIVACY PAGE */
+.privacy-box{
+  background:var(--surface);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:24px;
+  padding:3rem 2.5rem;
+  max-width:900px;
+  margin:0 auto;
+  line-height:1.8;
+  font-size:0.95rem;
   color:var(--muted);
-  margin-top:4rem;
+}
+
+.privacy-box h3{
+  font-family:var(--font-head);
+  font-size:1.2rem;
+  color:var(--yellow);
+  margin-top:2rem;
+  margin-bottom:0.6rem;
+}
+
+.privacy-box p{
+  margin-bottom:1rem;
 }
 </style>
 </head>
-
 <body>
 
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
 <!-- NAV -->
-<nav>
-  <div class="nav-logo">
-    <img src="word.png">
+<nav id="main-nav">
+  <a href="#" class="nav-logo">
+    <img src="IMG_2230.png" alt="Omdy Studio icon" class="logo-icon-img"/>
+    <img src="word.png" alt="Omdy Studio" class="logo-wordmark"/>
+  </a>
+
+  <ul class="nav-tabs">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="games.html">Games</a></li>
+    <li><a href="index.html#worlds">Worlds</a></li>
+    <li><a href="policy.html">Policy</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <a href="https://play.google.com/store/apps/details?id=com.door.omdy" target="_blank" class="nav-cta">
+      <span class="cta-dot"></span> Play Now
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
-<!-- PRIVACY -->
-<section>
+<!-- Mobile Drawer -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#game">Game</a></li>
+    <li><a href="index.html#worlds">Worlds</a></li>
+    <li><a href="policy.html">Policy</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="https://play.google.com/store/apps/details?id=com.door.omdy" target="_blank" class="mobile-cta">▶ Download on Google Play</a>
+</div>
+
+  <!-- PRIVACY POLICY -->
+<section id="privacy">
   <div class="section-inner">
-    <h1>Privacy Policy 🔒</h1>
-    <p class="desc">
-      This page explains how we collect, use, and protect your information.
-    </p>
 
-    <div class="box">
-
-      <h3>Introduction</h3>
-      <p>
-        Omdy Studio respects your privacy and is committed to protecting it.
-        By using our services, you agree to this Privacy Policy.
+    <div class="reveal" style="text-align:center;margin-bottom:3.5rem">
+      <div class="section-eyebrow">Legal</div>
+      <h2>Privacy Policy 🔒</h2>
+      <p class="section-desc" style="margin:0.5rem auto 0;max-width:600px">
+        This is the official privacy policy of Omdy Studio.
       </p>
+    </div>
 
-      <h3>Non-Personal Data</h3>
-      <p>
-        We may collect non-personal information such as device data, app usage,
-        and analytics to improve our games and services.
-      </p>
+    <div class="privacy-box reveal reveal-delay-1">
+
+      <h3>Privacy Policy</h3>
+      <p>Omdy Studio has adopted this privacy policy (“Privacy Policy”) to explain how Omdy Studio collects, stores, and uses the information collected in connection with Omdy Studio’s Services.</p>
+
+      <p>BY INSTALLING, USING, REGISTERING TO OR OTHERWISE ACCESSING THE SERVICES, YOU AGREE TO THIS PRIVACY POLICY AND GIVE AN EXPLICIT AND INFORMED CONSENT TO THE PROCESSING OF YOUR PERSONAL DATA IN ACCORDANCE WITH THIS PRIVACY POLICY. IF YOU DO NOT AGREE TO THIS PRIVACY POLICY, PLEASE DO NOT INSTALL, USE, REGISTER TO OR OTHERWISE ACCESS THE SERVICES. Omdy Studio reserves the right to modify this Privacy Policy at reasonable times, so please review it frequently. If Omdy Studio makes material or significant changes to this Privacy Policy, Omdy Studio may post a notice on Omdy Studio website along with the updated Privacy Policy. Your continued use of Services will signify your acceptance of the changes to this Privacy Policy.</p>
+
+      <h3>Non-personal data</h3>
+      <p>For purposes of this Privacy Policy, “non-personal data” means information that does not directly identify you. The types of non-personal data Omdy Studio may collect and use include, but are not limited to: application properties, including, but not limited to application name, package name and icon installed on your device. Your checkin (include like, recommendation) of a game will be disclosed to all Omdy Studio users.</p>
+
+      <p>Omdy Studio may use and disclose to Person1 ’s partners and contractors the collected non-personal data for purposes of analyzing usage of the Services, advertisement serving, managing and providing the Services and to further develop the Services and other Omdy Studio services and products.</p>
+
+      <p>You recognize and agree that the analytics companies utilized by Omdy Studio may combine the information collected with other information they have independently collected from other services or products relating to your activities. These companies collect and use information under their own privacy policies.</p>
 
       <h3>Personal Data</h3>
-      <p>
-        Personal data is only collected if you provide it voluntarily
-        (like email or name).
-      </p>
+      <p>For purposes of this Privacy Policy, “personal data” means personally identifiable information that specifically identifies you as an individual.</p>
 
-      <h3>How We Use Data</h3>
-      <ul>
-        <li>Improve gameplay experience</li>
-        <li>Provide support</li>
-        <li>Analyze performance</li>
-        <li>Develop new features</li>
-      </ul>
+      <p>Personal information collected by Omdy Studio is information voluntarily provided to us by you when you create your account or change your account</p>
 
-      <h3>Third Party Services</h3>
-      <p>
-        We may use third-party services like analytics tools that collect
-        usage data according to their own policies.
-      </p>
+      <p>Omdy Studio may use collected personal data for purposes of analyzing usage of the Services, providing customer and technical support, managing and providing Services (including managing advertisement serving) and to further develop the Services and other Omdy Studio services and products. Omdy Studio may combine non-personal data with personal data.</p>
 
-      <h3>Security</h3>
-      <p>
-        We use standard security measures to protect your data,
-        but no system is 100% secure.
-      </p>
+      <p>Please note that certain features of the Services may be able to connect to your social networking sites to obtain additional information about you. In such cases, Omdy Studio may be able to collect certain information from your social networking profile when your social networking site permits it, and when you consent to allow your social networking site to make that information available to Person1 . This information may include, but is not limited to, your name, profile picture, gender, user ID, email address, your country, your language, your time zone, the organizations and links on your profile page, the names and profile pictures of your social networking site “friends” and other information you have included in your social networking site profile. Omdy Studio may associate and/or combine as well as use information collected by Omdy Studio and/or obtained through such social networking sites in accordance with this Privacy Policy.</p>
 
-      <h3>Children Policy</h3>
-      <p>
-        Our services are not intended for children under 13.
-      </p>
+      <h3>Disclosure and Transfer of Personal Data</h3>
+      <p>Omdy Studio collects and processes personal data on a voluntary basis and it is not in the business of selling your personal data to third parties. Personal data may, however, occasionally be disclosed in accordance with applicable legislation and this Privacy Policy. Additionally, Omdy Studio may disclose personal data to its parent companies and its subsidiaries in accordance with this Privacy Policy.</p>
 
-      <h3>Changes</h3>
-      <p>
-        We may update this policy at any time. Continued use means you accept changes.
-      </p>
+      <p>Omdy Studio may hire agents and contractors to collect and process personal data on Person1 ’s behalf and in such cases such agents and contractors will be instructed to comply with our Privacy Policy and to use personal data only for the purposes for which the third party has been engaged by Person1 . These agents and contractors may not use your personal data for their own marketing purposes. Omdy Studio may use third party service providers such as credit card processors, e-mail service providers, shipping agents, data analyzers and business intelligence providers. Omdy Studio has the right to share your personal data as necessary for the aforementioned third parties to provide their services for Person1 . Omdy Studio is not liable for the acts and omissions of these third parties, except as provided by mandatory law.</p>
 
-      <h3>Contact</h3>
-      <div class="contact">
-        📧 <a href="mailto:omdy.chat@gmail.com">omdy.chat@gmail.com</a>
-      </div>
+      <p>Omdy Studio may disclose your personal data to third parties as required by law enforcement or other government officials in connection with an investigation of fraud, intellectual property infringements, or other activity that is illegal or may expose you or Omdy Studio to legal liability. Omdy Studio may also disclose your personal data to third parties when Omdy Studio has a reason to believe that a disclosure is necessary to address potential or actual injury or interference with Person1 ’s rights, property, operations, users or others who may be harmed or may suffer loss or damage, or Omdy Studio believes that such disclosure is necessary to protect Omdy Studio’s rights, combat fraud and/or comply with a judicial proceeding, court order, or legal process served on Person1 . To the extent permitted by applicable law, Omdy Studio will make reasonable efforts to notify you of such disclosure through Person1 ’s website or in another reasonable manner.</p>
+
+      <h3>Safeguards</h3>
+      <p>Omdy Studio follows generally accepted industry standards and maintains reasonable safeguards to attempt to ensure the security, integrity and privacy of the information in Person1 ’s possession. Only those persons with a need to process your personal data in connection with the fulfillment of their tasks in accordance with the purposes of this Privacy Policy and for the purposes of performing technical maintenance, have access to your personal data in Person1 ’s possession. Personal data collected by Omdy Studio is stored in secure operating environments that are not available to the public. To prevent unauthorized on-line access to personal data, Omdy Studio maintains personal data behind a firewall-protected server. However, no system can be 100% secure and there is the possibility that despite Person1 ’s reasonable efforts, there could be unauthorized access to your personal data. By using the Services, you assume this risk.</p>
+
+      <h3>Other</h3>
+      <p>... (كمل بنفس النص اللي انت حاطه لحد الآخر بدون تغيير)</p>
+
+      <h3>Contact Us</h3>
+      <p>Email: Omdy.chat@gmail.com</p>
 
     </div>
   </div>
 </section>
-
 <!-- FOOTER -->
 <footer>
-  © 2025 Omdy Studio — All Rights Reserved
+  <div class="footer-top">
+    <!-- Brand -->
+    <div class="footer-brand">
+      <a href="#" class="footer-brand-logo">
+        <img src="IMG_2230.png" alt="Omdy Studio icon"/>
+        <img src="word.png" alt="Omdy Studio"/>
+      </a>
+      <p class="footer-brand-desc">We build fun, addictive mobile games that challenge your knowledge and entertain millions. Based in Egypt 🇪🇬, played worldwide.</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/omdy_studio?igsh=Yjdza3E3YzN2cmQ3" target="_blank" class="social-btn" title="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://youtube.com/@omdy_studio_dev?si=M1CF1jMgkgWM_0Rl" target="_blank" class="social-btn" title="YouTube">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.1.3 4.3.3 4.3s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.6 21.8 12 21.8 12 21.8s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.3v-2C23.3 9.1 23 7 23 7zm-13.5 8.7V8.3l8.1 3.7-8.1 3.7z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61577235958777" target="_blank" class="social-btn" title="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://x.com/omdy_studio?s=21" target="_blank" class="social-btn" title="X (Twitter)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigate -->
+    <div>
+      <div class="footer-col-title">Navigate</div>
+      <ul class="footer-col-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="games.html">Our Games</a></li>
+        <li><a href="index.html#worlds">Worlds</a></li>
+        <li><a href="index.html#modes">Challenge Modes</a></li>
+        <li><a href="index.html#languages">Languages</a></li>
+        <li><a href="index.html#stats">Stats</a></li>
+      </ul>
+    </div>
+
+    <!-- Legal -->
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-col-links">
+        <li><a href="policy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+        <li><a href="cookies.html">Cookie Policy</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <div class="footer-col-title">Get In Touch</div>
+      <div class="footer-contact-item">
+        <div class="footer-contact-icon">✉</div>
+        <div>
+          <div class="footer-contact-label">Email</div>
+          <div class="footer-contact-val"><a href="mailto:omdy.chat@gmail.com">omdy.chat@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="footer-contact-item">
+        <div class="footer-contact-icon">📍</div>
+        <div>
+          <div class="footer-contact-label">Location</div>
+          <div class="footer-contact-val">Egypt 🇪🇬</div>
+        </div>
+      </div>
+      <div class="footer-contact-item">
+        <div class="footer-contact-icon">📅</div>
+        <div>
+          <div class="footer-contact-label">Founded</div>
+          <div class="footer-contact-val">2022</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom-wrap">
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 <span>Omdy Stydio</span>. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
+<script>
+// Nav scroll shrink + active state
+const nav = document.getElementById('main-nav');
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-tabs a');
+
+window.addEventListener('scroll', () => {
+  // Shrink nav
+  if(window.scrollY > 60){
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+  // Active tab highlight
+  let current = '';
+  sections.forEach(sec => {
+    if(window.scrollY >= sec.offsetTop - 120) current = sec.getAttribute('id');
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if(a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+
+// Hamburger
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+// Close mobile menu on link click
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+// Generate stars
+const starsEl = document.getElementById('stars');
+for(let i=0;i<120;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const size=Math.random()*2.5+0.5;
+  s.style.cssText=`width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s`;
+  starsEl.appendChild(s);
+}
+
+// Scroll reveal
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
 </body>
 </html>
